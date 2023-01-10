@@ -7,7 +7,7 @@ import (
 	"os"
 
 	"github.com/veandco/go-sdl2/sdl"
-	ttf "github.com/veandco/go-sdl2/sdl_ttf"
+	ttf "github.com/veandco/go-sdl2/ttf"
 )
 
 const (
@@ -53,7 +53,7 @@ start:
 		switch sdl.WaitEvent().(type) {
 		case *sdl.QuitEvent:
 			return nil
-		case *sdl.KeyUpEvent, *sdl.MouseButtonEvent:
+		case *sdl.KeyboardEvent, *sdl.MouseButtonEvent:
 			break start
 		}
 	}
@@ -69,7 +69,7 @@ loop:
 		switch event := sdl.WaitEvent().(type) {
 		case *sdl.QuitEvent:
 			break loop
-		case *sdl.KeyUpEvent, *sdl.MouseButtonEvent:
+		case *sdl.KeyboardEvent, *sdl.MouseButtonEvent:
 			if s.bird.dead {
 				s.restart()
 				continue

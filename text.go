@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/veandco/go-sdl2/sdl"
-	ttf "github.com/veandco/go-sdl2/sdl_ttf"
+	ttf "github.com/veandco/go-sdl2/ttf"
 )
 
 func drawTitle(r *sdl.Renderer) error {
@@ -35,7 +35,7 @@ func drawText(renderer *sdl.Renderer, text string, rect *sdl.Rect, color sdl.Col
 		return fmt.Errorf("could not load font: %v", err)
 	}
 
-	surface, err := font.RenderUTF8_Solid(text, color)
+	surface, err := font.RenderUTF8Solid(text, color)
 	if err != nil {
 		return fmt.Errorf("could not render text: %v", err)
 	}
