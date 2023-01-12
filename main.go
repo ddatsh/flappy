@@ -46,7 +46,7 @@ func run() error {
 	if err != nil {
 		return fmt.Errorf("could not draw title: %v", err)
 	}
-	sdl.Delay(2000)
+	//sdl.Delay(2000)
 
 start:
 	for {

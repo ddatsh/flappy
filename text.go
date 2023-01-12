@@ -1,11 +1,14 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
-
 	"github.com/veandco/go-sdl2/sdl"
 	ttf "github.com/veandco/go-sdl2/ttf"
 )
+
+//go:embed res/fonts/Flappy.ttf
+var embedTtf []byte
 
 func drawTitle(r *sdl.Renderer) error {
 	r.Clear()
@@ -29,8 +32,10 @@ func drawTitle(r *sdl.Renderer) error {
 }
 
 func drawText(renderer *sdl.Renderer, text string, rect *sdl.Rect, color sdl.Color) error {
-	path := "res/fonts/Flappy.ttf"
-	font, err := ttf.OpenFont(path, 30)
+	//path := "res/fonts/Flappy.ttf"
+	mem, err := sdl.RWFromMem(embedTtf)
+	//font, err := ttf.OpenFont(path, 30)
+	font, err := ttf.OpenFontRW(mem, 0, 30)
 	if err != nil {
 		return fmt.Errorf("could not load font: %v", err)
 	}

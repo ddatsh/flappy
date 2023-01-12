@@ -2,11 +2,30 @@ package main
 
 import (
 	"context"
+	_ "embed"
 	"fmt"
 
 	img "github.com/veandco/go-sdl2/img"
 	"github.com/veandco/go-sdl2/sdl"
 )
+
+//go:embed res/imgs/background.png
+var embedBackground []byte
+
+//go:embed res/imgs/bird_frame_1.png
+var embedBird1 []byte
+
+//go:embed res/imgs/bird_frame_2.png
+var embedBird2 []byte
+
+//go:embed res/imgs/bird_frame_3.png
+var embedBird3 []byte
+
+//go:embed res/imgs/bird_frame_4.png
+var embedBird4 []byte
+
+//go:embed res/imgs/pipe.png
+var embedPipe []byte
 
 const (
 	minPipeDist = 300
@@ -22,8 +41,9 @@ type scene struct {
 
 func newScene(r *sdl.Renderer, speed int32, gravity float64) (s *scene, err error) {
 	s = &scene{renderer: r}
-
-	s.bg, err = img.LoadTexture(r, "res/imgs/background.png")
+	mem, err := sdl.RWFromMem(embedBackground)
+	s.bg, err = img.LoadTextureRW(r, mem, true)
+	//s.bg, err = img.LoadTexture(r, "res/imgs/background.png")
 	if err != nil {
 		return nil, fmt.Errorf("could not load background image: %v", err)
 	}
@@ -35,21 +55,39 @@ func newScene(r *sdl.Renderer, speed int32, gravity float64) (s *scene, err erro
 		h:       43,
 		gravity: gravity,
 	}
-	for i := 1; i <= 4; i++ {
+	/*	for i := 1; i <= 4; i++ {
 		path := fmt.Sprintf("res/imgs/bird_frame_%d.png", i)
 		frame, errLoad := img.LoadTexture(r, path)
 		if errLoad != nil {
 			return nil, fmt.Errorf("could not load bird_frame_%d image: %v", i, err)
 		}
 		s.bird.frames = append(s.bird.frames, frame)
-	}
+	}*/
+
+	mem, _ = sdl.RWFromMem(embedBird1)
+	frame, _ := img.LoadTextureRW(r, mem, true)
+	s.bird.frames = append(s.bird.frames, frame)
+
+	mem, _ = sdl.RWFromMem(embedBird2)
+	frame, _ = img.LoadTextureRW(r, mem, true)
+	s.bird.frames = append(s.bird.frames, frame)
+
+	mem, _ = sdl.RWFromMem(embedBird3)
+	frame, _ = img.LoadTextureRW(r, mem, true)
+	s.bird.frames = append(s.bird.frames, frame)
+
+	mem, _ = sdl.RWFromMem(embedBird4)
+	frame, _ = img.LoadTextureRW(r, mem, true)
+	s.bird.frames = append(s.bird.frames, frame)
 
 	s.pipes = &pipes{
 		speed: speed,
 		pipes: initialPipes(),
 	}
 
-	s.pipes.texture, err = img.LoadTexture(r, "res/imgs/pipe.png")
+	mem, err = sdl.RWFromMem(embedPipe)
+	s.pipes.texture, err = img.LoadTextureRW(r, mem, true)
+	//s.pipes.texture, err = img.LoadTexture(r, "res/imgs/pipe.png")
 	if err != nil {
 		return nil, fmt.Errorf("could not load pipe texture: %v", err)
 
